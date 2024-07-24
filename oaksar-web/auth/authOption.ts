@@ -9,6 +9,9 @@ export const authOption: AuthOptions = {
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID as string,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+            httpOptions: {
+                timeout: 10000,
+            },
         }),
     ],
     adapter: PrismaAdapter(prisma),

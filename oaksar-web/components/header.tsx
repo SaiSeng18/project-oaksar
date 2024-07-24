@@ -2,12 +2,14 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { signIn, signOut, useSession } from 'next-auth/react';
 
-const Header = () => {
-    const { data, status, update } = useSession();
+import UserAvatar from './user-avatar';
 
-    console.log(data);
+const Header = () => {
+    const { status, data } = useSession();
+    const router = useRouter();
 
     return (
         <div className='flex w-full max-w-[1440px] items-center justify-between py-5'>
@@ -44,18 +46,15 @@ const Header = () => {
                     Get Started
                 </Link>
                 {status === 'authenticated' ? (
-                    <button
-                        className='rounded-md px-5 py-3 text-sm text-dark hover:bg-black/5'
-                        onClick={() => {
-                            signOut();
-                        }}>
-                        Sign Out
-                    </button>
+                    <>
+                        <UserAvatar user={data.user} />
+                    </>
                 ) : (
                     <button
-                        className='rounded-md px-5 py-3 text-sm text-dark hover:bg-black/5'
+                        className='rounded-md border border-black/20 bg-white px-5 py-3 text-sm text-dark hover:bg-dark/5'
                         onClick={() => {
                             signIn();
+                            router.push('/dashboard');
                         }}>
                         Sign In
                     </button>
