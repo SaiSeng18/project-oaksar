@@ -50,14 +50,11 @@ const Header = () => {
                         <UserAvatar user={data.user} />
                     </>
                 ) : (
-                    <button
-                        className='rounded-md border border-black/20 bg-white px-5 py-3 text-sm text-dark hover:bg-dark/5'
-                        onClick={() => {
-                            signIn();
-                            router.push('/dashboard');
-                        }}>
+                    <Link
+                        href='/sign-in'
+                        className='rounded-md border border-black/20 bg-white px-5 py-3 text-sm text-dark hover:bg-dark/5'>
                         Sign In
-                    </button>
+                    </Link>
                 )}
             </div>
         </div>

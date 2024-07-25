@@ -23,12 +23,19 @@ const UserAvatar = ({
           }
         | undefined;
 }) => {
+    const name = user?.name
+        ?.split(' ')
+        .slice(0, 2)
+        .map(n => n[0])
+        .join('')
+        .toUpperCase();
+
     return (
         <DropdownMenu>
             <DropdownMenuTrigger className='w-fit focus-within:outline-none'>
                 <Avatar>
                     <AvatarImage src={user?.image as string} />
-                    <AvatarFallback>CN</AvatarFallback>
+                    <AvatarFallback>{name}</AvatarFallback>
                 </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
