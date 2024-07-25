@@ -1,3 +1,5 @@
+'use client';
+
 import { signOut } from 'next-auth/react';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -23,7 +25,7 @@ const UserAvatar = ({
 }) => {
     return (
         <DropdownMenu>
-            <DropdownMenuTrigger className='focus-within:outline-none'>
+            <DropdownMenuTrigger className='w-fit focus-within:outline-none'>
                 <Avatar>
                     <AvatarImage src={user?.image as string} />
                     <AvatarFallback>CN</AvatarFallback>
