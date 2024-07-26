@@ -50,7 +50,6 @@ const SignUpPage = () => {
                 if (res?.ok) {
                     router.push('/dashboard');
                 } else {
-                    console.log(error);
                     switch (res?.error) {
                         case 'CredentialsSignin':
                             setError('Invalid credentials!');

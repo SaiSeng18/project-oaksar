@@ -1,11 +1,13 @@
 import type { GetServerSidePropsContext, NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession, type NextAuthOptions } from 'next-auth';
 
+import { authOption } from './authOption';
+
 // You'll need to import and pass this
 // to `NextAuth` in `app/api/auth/[...nextauth]/route.ts`
-export const config = {
-    providers: [], // rest of your config
-} satisfies NextAuthOptions;
+// export const config = {
+//     providers: [], // rest of your config
+// } satisfies NextAuthOptions;
 
 // Use it in server contexts
 export function auth(
@@ -14,5 +16,5 @@ export function auth(
         | [NextApiRequest, NextApiResponse]
         | []
 ) {
-    return getServerSession(...args, config);
+    return getServerSession(...args, authOption);
 }

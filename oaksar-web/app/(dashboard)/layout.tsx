@@ -1,10 +1,13 @@
 import { redirect } from 'next/navigation';
+import { getServerSession } from 'next-auth';
 
 import { auth } from '@/auth';
+import { authOption } from '@/auth/authOption';
 import SideNav from '@/components/side-nav';
 
 const DashboardLayout = async ({ children }: { children: React.ReactNode }) => {
     const session = await auth();
+    console.log(session);
 
     if (!session) redirect('/sign-in');
 

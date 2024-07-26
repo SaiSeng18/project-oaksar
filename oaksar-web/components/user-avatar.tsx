@@ -26,7 +26,7 @@ const UserAvatar = ({
     const name = user?.name
         ?.split(' ')
         .slice(0, 2)
-        .map(n => n[0])
+        .map((n, i, arr) => (arr.length === 1 ? n[0] : n[0]))
         .join('')
         .toUpperCase();
 
