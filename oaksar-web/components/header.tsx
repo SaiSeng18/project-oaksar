@@ -2,14 +2,14 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { signIn, signOut, useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
+
+import { Skeleton } from '@/components/ui/skeleton';
 
 import UserAvatar from './user-avatar';
 
 const Header = () => {
     const { status, data } = useSession();
-    const router = useRouter();
 
     return (
         <div className='flex w-full max-w-[1440px] items-center justify-between py-5'>
@@ -45,7 +45,9 @@ const Header = () => {
                     className='rounded-md bg-dark px-5 py-3 text-sm text-white hover:bg-dark/90'>
                     Get Started
                 </Link>
-                {status === 'authenticated' ? (
+                {status === 'loading' ? (
+                    <Skeleton className='w-[100px] rounded-md border bg-dark/20 py-3' />
+                ) : status === 'authenticated' ? (
                     <>
                         <UserAvatar user={data.user} />
                     </>

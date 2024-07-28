@@ -1,4 +1,5 @@
 import Chat from '@/components/ai-chat/chat';
+import Statistic from '@/components/dashboard/statistics';
 
 const DashboardPage = () => {
     return (
@@ -10,7 +11,7 @@ const DashboardPage = () => {
                     <div className='rounded-full bg-gray-200 px-5 py-3'>Months</div>
                 </div>
             </div>
-            <Chat />
+            <Statistic />
         </div>
     );
 };
