@@ -6,6 +6,7 @@ const Statistic = () => {
         <div className='flex w-full flex-col gap-5'>
             <div className='grid w-full grid-cols-3'>
                 <RevenueChart />
+                <RevenueChart />
                 {/* <ProfitChart />
 		<ExpenseChart /> */}
             </div>

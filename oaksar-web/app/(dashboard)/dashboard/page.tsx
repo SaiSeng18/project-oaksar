@@ -3,7 +3,7 @@ import Statistic from '@/components/dashboard/statistics';
 
 const DashboardPage = () => {
     return (
-        <div className='p-5'>
+        <div className='grow-0 p-5'>
             <div className='flex w-full items-center justify-between'>
                 <div className='text-[48px]'>INVENTORY</div>
 

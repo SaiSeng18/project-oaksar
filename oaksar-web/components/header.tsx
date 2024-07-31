@@ -46,7 +46,7 @@ const Header = () => {
                     Get Started
                 </Link>
                 {status === 'loading' ? (
-                    <Skeleton className='w-[100px] rounded-md border bg-dark/20 py-3' />
+                    <Skeleton className='w-[100px] rounded-md border bg-dark/10 py-3' />
                 ) : status === 'authenticated' ? (
                     <>
                         <UserAvatar user={data.user} />

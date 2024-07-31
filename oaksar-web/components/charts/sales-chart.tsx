@@ -137,7 +137,7 @@ export function SalesChart() {
                     <CardTitle>Bar Chart - Interactive</CardTitle>
                     <CardDescription>Showing total visitors for the last 3 months</CardDescription>
                 </div>
-                <div className='flex'>
+                {/* <div className='flex'>
                     {['desktop', 'mobile'].map(key => {
                         const chart = key as keyof typeof chartConfig;
                         return (
@@ -155,7 +155,7 @@ export function SalesChart() {
                             </button>
                         );
                     })}
-                </div>
+                </div> */}
             </CardHeader>
             <CardContent className='px-2 sm:p-6'>
                 <ChartContainer config={chartConfig} className='aspect-auto h-[250px] w-full'>
