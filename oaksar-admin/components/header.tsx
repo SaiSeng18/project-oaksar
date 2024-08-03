@@ -9,7 +9,7 @@ const Header = () => {
             </Link>
 
             <Link
-                href='/dashboard'
+                href='/overview'
                 className='rounded-md bg-dark px-5 py-3 text-sm text-white hover:bg-dark/90'>
                 Get Started
             </Link>

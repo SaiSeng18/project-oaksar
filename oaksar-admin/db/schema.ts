@@ -1,36 +1,61 @@
-import { integer, pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core';
-
-export const usersTable = pgTable('users_table', {
-    id: serial('id').primaryKey(),
-    name: text('name').notNull(),
-    age: integer('age').notNull(),
-    email: text('email').notNull().unique(),
-});
-
-export const postsTable = pgTable('posts_table', {
-    id: serial('id').primaryKey(),
-    title: text('title').notNull(),
-    content: text('content').notNull(),
-    userId: integer('user_id')
-        .notNull()
-        .references(() => usersTable.id, { onDelete: 'cascade' }),
-    createdAt: timestamp('created_at').notNull().defaultNow(),
-    updatedAt: timestamp('updated_at')
-        .notNull()
-        .$onUpdate(() => new Date()),
-});
+import { relations } from 'drizzle-orm';
+import { integer, pgTable, serial, text, timestamp, varchar } from 'drizzle-orm/pg-core';
 
 export const product = pgTable('product', {
     id: serial('id').primaryKey(),
-    name: text('name').notNull(),
+    name: varchar('name', { length: 255 }).notNull(),
+    description: text('description'),
     price: integer('price').notNull(),
-    category: text('category').notNull(),
+    categoryId: integer('category_id').references(() => category.id),
+    createdAt: timestamp('created_at').notNull().defaultNow(),
+    updatedAt: timestamp('updated_at')
+        .notNull()
+        .$onUpdate(() => new Date())
+        .defaultNow(),
 });
 
-export type InsertUser = typeof usersTable.$inferInsert;
-export type SelectUser = typeof usersTable.$inferSelect;
+export const category = pgTable('category', {
+    id: serial('id').primaryKey(),
+    name: varchar('name', { length: 255 }).notNull(),
+    description: text('description'),
+});
 
-export type InsertPost = typeof postsTable.$inferInsert;
-export type SelectPost = typeof postsTable.$inferSelect;
+export const productRelation = relations(product, ({ one, many }) => ({
+    category: one(category, {
+        fields: [product.categoryId],
+        references: [category.id],
+    }),
+}));
 
-export type Product = typeof product.$inferSelect;
+export const categoryRelation = relations(category, ({ many }) => ({
+    products: many(product),
+}));
+
+export const inventory = pgTable('inventory', {
+    inventoryId: serial('id').primaryKey(),
+    productId: integer('product_id').references(() => product.id),
+    quantityOnHand: integer('quantity_on_hand').notNull(),
+    reorderPoint: integer('reorder_point').notNull(),
+    safetyStock: integer('safety_stock').notNull(),
+    createdAt: timestamp('created_at').notNull().defaultNow(),
+    updatedAt: timestamp('updated_at')
+        .notNull()
+        .$onUpdate(() => new Date())
+        .defaultNow(),
+});
+
+export const inventoryRelation = relations(inventory, ({ one }) => ({
+    product: one(product, {
+        fields: [inventory.productId],
+        references: [product.id],
+    }),
+}));
+
+export type ProductType = typeof product.$inferSelect;
+// export type ProductInsert = typeof product.$inferInsert;
+
+export type CategoryType = typeof category.$inferSelect;
+// export type CategoryInsert = typeof category.$inferInsert;
+
+export type InventoryType = typeof inventory.$inferSelect;
+// export type InventoryInsert = typeof inventory.$inferInsert;

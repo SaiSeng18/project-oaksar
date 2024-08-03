@@ -31,7 +31,7 @@ export default function Home() {
                     </p>
                     <div className='flex items-center gap-5'>
                         <Link
-                            href='/dashboard'
+                            href='/overview'
                             className='rounded-md bg-black px-5 py-3 text-sm text-white hover:bg-black/90'>
                             Get Started
                         </Link>

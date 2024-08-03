@@ -1,12 +1,12 @@
 'use server';
 
 import { openai } from '@ai-sdk/openai';
-import { generateObject } from 'ai';
+import { generateObject, generateText, tool } from 'ai';
 import { z } from 'zod';
 
-const getImageData = async () => {
+export const getImageData = async () => {
     const { object } = await generateObject({
-        model: openai('gpt-4-turbo'),
+        model: openai('gpt-4o'),
         maxTokens: 512,
         schema: z.object({
             answers: z.array(
@@ -16,6 +16,7 @@ const getImageData = async () => {
                 })
             ),
         }),
+
         messages: [
             {
                 role: 'user',
@@ -47,4 +48,26 @@ const getImageData = async () => {
             },
         ],
     });
+};
+
+export const getWeatherData = async () => {
+    const result = await generateText({
+        model: openai('gpt-4o'),
+        tools: {
+            weather: tool({
+                description: 'Get the weather in a location',
+                parameters: z.object({
+                    location: z.string().describe('The location to get the weather for'),
+                }),
+                execute: async ({ location }) => ({
+                    location,
+                    temperature: 72 + Math.floor(Math.random() * 21) - 10,
+                }),
+            }),
+        },
+        toolChoice: 'required', // force the model to call a tool
+        prompt: 'What is the weather in San Francisco and what attractions should I visit?',
+    });
+
+    return result;
 };
