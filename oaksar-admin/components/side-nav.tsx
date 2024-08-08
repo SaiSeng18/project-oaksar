@@ -9,7 +9,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/component
 
 const SideNav = () => {
     return (
-        <div className='flex h-full w-full max-w-[350px] flex-col space-y-5 px-10 py-5 2xl:px-5 xl:max-w-[300px]'>
+        <div className='flex h-full w-full max-w-[350px] flex-col space-y-5 border-r px-10 py-5 2xl:max-w-[300px] 2xl:px-5'>
             <Link href='/overview' className='flex items-center gap-2'>
                 <Image src='/icons/oaksar-light.svg' alt='Logo' width={70} height={70} />
                 <div className='text-xl font-medium'>Oaksar</div>
@@ -29,7 +29,15 @@ const SideNav = () => {
                         <Nav title='Overview' href='/overview' type='single' />
                     </li>
                     <li className='w-full'>
-                        <Nav title='Inventory' href='/overview' type='multiple' />
+                        <Nav
+                            title='Inventory'
+                            type='multiple'
+                            links={[
+                                { title: 'Inventory List', href: '/inventory' },
+                                { title: 'Products', href: '/inventory/products' },
+                                { title: 'Categories', href: '/inventory/categories' },
+                            ]}
+                        />
                     </li>
                     <li className='w-full'>
                         <Nav title='Orders' href='/overview' type='multiple' />
@@ -46,17 +54,19 @@ const SideNav = () => {
 const Nav = ({
     title,
     href,
+    links,
     type = 'single',
 }: {
     title: string;
-    href: string;
+    href?: string;
+    links?: { title: string; href: string }[];
     type?: 'single' | 'multiple';
 }) => {
     if (type === 'single') {
         return (
             <Link
-                href={href}
-                className='flex h-[60px] w-full items-center justify-between rounded-md px-2 text-gray-1 hover:bg-cyan/50'>
+                href={href as string}
+                className='flex h-[40px] w-full items-center justify-between rounded-md px-2 text-gray-1 hover:bg-cyan/50'>
                 {title}
             </Link>
         );
@@ -64,14 +74,19 @@ const Nav = ({
 
     return (
         <Collapsible>
-            <CollapsibleTrigger className='flex h-[60px] w-full items-center justify-between rounded-md px-2 text-gray-1 hover:bg-cyan/50 [&[data-state=open]>svg]:rotate-180'>
+            <CollapsibleTrigger className='flex h-[40px] w-full items-center justify-between rounded-md px-2 text-gray-1 hover:bg-cyan/50 [&[data-state=open]>svg]:rotate-180'>
                 <div>{title}</div>
                 <ChevronDown className='h-4 w-4 shrink-0 transition-transform duration-200' />
             </CollapsibleTrigger>
             <CollapsibleContent className='w-full pl-10'>
-                <Link href={href} className='block w-full px-3 py-3 hover:bg-gray-100/50'>
-                    {title}
-                </Link>
+                {links?.map(link => (
+                    <Link
+                        key={link.title}
+                        href={link.href}
+                        className='block w-full rounded-md px-3 py-2.5 hover:bg-gray-100/50'>
+                        {link.title}
+                    </Link>
+                ))}
             </CollapsibleContent>
         </Collapsible>
     );

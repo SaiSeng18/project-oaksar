@@ -6,6 +6,12 @@ export const product = pgTable('product', {
     name: varchar('name', { length: 255 }).notNull(),
     description: text('description'),
     price: integer('price').notNull(),
+    imgUrl: text('img_url').array(),
+    width: integer('width'),
+    height: integer('height'),
+    length: integer('length'),
+    weight: integer('weight'),
+    colors: text('colors').array(),
     categoryId: integer('category_id').references(() => category.id),
     createdAt: timestamp('created_at').notNull().defaultNow(),
     updatedAt: timestamp('updated_at')
@@ -52,10 +58,10 @@ export const inventoryRelation = relations(inventory, ({ one }) => ({
 }));
 
 export type ProductType = typeof product.$inferSelect;
-// export type ProductInsert = typeof product.$inferInsert;
+export type ProductInsert = typeof product.$inferInsert;
 
 export type CategoryType = typeof category.$inferSelect;
-// export type CategoryInsert = typeof category.$inferInsert;
+export type CategoryInsert = typeof category.$inferInsert;
 
 export type InventoryType = typeof inventory.$inferSelect;
-// export type InventoryInsert = typeof inventory.$inferInsert;
+export type InventoryInsert = typeof inventory.$inferInsert;

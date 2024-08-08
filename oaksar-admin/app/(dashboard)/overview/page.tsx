@@ -3,6 +3,7 @@ import { generateObject, generateText, streamText } from 'ai';
 import { z } from 'zod';
 
 import { getWeatherData } from '@/actions/ai';
+import Analytics from '@/components/overview-page/analytics';
 import { db } from '@/db';
 
 const DashboardPage = async () => {
@@ -21,6 +22,10 @@ const DashboardPage = async () => {
         with: { products: true },
     });
 
-    return <div>Hi</div>;
+    return (
+        <section className='px-10 py-5 2xl:px-5'>
+            <Analytics />
+        </section>
+    );
 };
 export default DashboardPage;

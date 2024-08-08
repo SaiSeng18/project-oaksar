@@ -15,6 +15,20 @@
       "when": 1722500209990,
       "tag": "0001_initial",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1723091860335,
+      "tag": "0002_update-product-table",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1723097121703,
+      "tag": "0003_add-image-url-to-product",
+      "breakpoints": true
     }
   ]
 }
