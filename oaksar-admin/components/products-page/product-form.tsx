@@ -60,7 +60,7 @@ const ProductForm = ({ categories }: { categories: CategoryType[] }) => {
             height: '',
             length: '',
             weight: '',
-            colors: [''],
+            colors: [],
         },
     });
 
