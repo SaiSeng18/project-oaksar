@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import {
     ColumnDef,
     ColumnFiltersState,
@@ -10,7 +11,9 @@ import {
     getPaginationRowModel,
     useReactTable,
 } from '@tanstack/react-table';
+import axios from 'axios';
 import { ChevronDown, Trash } from 'lucide-react';
+import { set } from 'zod';
 
 import AlertModal from '@/components/ui/alert-modal';
 import { Button } from '@/components/ui/button';
@@ -29,6 +32,7 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
+import { CategoryType } from '@/db/schema';
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
@@ -38,6 +42,8 @@ interface DataTableProps<TData, TValue> {
 export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
     const [isOpen, setIsOpen] = useState(false);
     const [loading, setLoading] = useState(false);
+
+    const router = useRouter();
 
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
@@ -53,8 +59,19 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
         },
     });
 
-    const handleDelete = () => {
-        console.log(table.getFilteredSelectedRowModel().rows[0].original);
+    const handleDelete = async () => {
+        try {
+            setLoading(true);
+            //@ts-ignore
+            const ids = table.getFilteredSelectedRowModel().rows.map(({ original }) => original.id);
+            const res = await axios.delete(`/api/category/${ids.join(',')}`);
+            setLoading(false);
+            setIsOpen(false);
+
+            router.refresh();
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (
@@ -67,7 +84,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
             />
             <div className='flex items-center py-4'>
                 <Input
-                    placeholder='Filter inventory...'
+                    placeholder='Filter category...'
                     value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
                     onChange={event => table.getColumn('name')?.setFilterValue(event.target.value)}
                     className='max-w-sm'
@@ -134,7 +151,9 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
                                     key={row.id}
                                     data-state={row.getIsSelected() && 'selected'}>
                                     {row.getVisibleCells().map(cell => (
-                                        <TableCell key={cell.id}>
+                                        <TableCell
+                                            key={cell.id}
+                                            className='max-w-[100px] text-ellipsis'>
                                             {flexRender(
                                                 cell.column.columnDef.cell,
                                                 cell.getContext()

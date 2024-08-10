@@ -15,7 +15,8 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useToast } from '@/components/ui/use-toast';
-import { CategoryType } from '@/db/schema';
+import { db } from '@/db';
+import { category, CategoryType } from '@/db/schema';
 import { cn } from '@/lib/utils';
 
 interface CellActionProps {
@@ -41,15 +42,8 @@ export default function CellAction({ data }: CellActionProps) {
     const onDelete = async () => {
         try {
             setLoading(true);
-            // await axios.delete(`/api/${params.storeId}/billboards/${data.id}`);
+            await axios.delete(`/api/category/${data.id}`);
             router.refresh();
-            toast({
-                description: 'Billboard deleted',
-                duration: 3000,
-                className: cn(
-                    'top-5 right-5 flex fixed max-w-[420px] md:top-4 md:right-4 bg-red-400 text-white'
-                ),
-            });
         } catch (error) {
             toast({
                 description: 'Fail to delete billboard',

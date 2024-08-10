@@ -1,7 +1,9 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
+import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -9,6 +11,7 @@ import { Button } from '@/components/ui/button';
 import {
     Form,
     FormControl,
+    FormDescription,
     FormField,
     FormItem,
     FormLabel,
@@ -24,6 +27,7 @@ import {
 } from '@/components/ui/select';
 import { CategoryType } from '@/db/schema';
 
+import ColorPicker from './color-picker';
 import ImageInput from './image-input';
 
 const formSchema = z.object({
@@ -31,7 +35,7 @@ const formSchema = z.object({
     price: z.string().min(1),
     description: z.string().min(2).max(50),
     categoryId: z.string().min(1),
-    imgUrl: z.string().min(1),
+    imgUrls: z.string().array(),
     width: z.string(),
     height: z.string(),
     length: z.string(),
@@ -42,6 +46,8 @@ const formSchema = z.object({
 const ProductForm = ({ categories }: { categories: CategoryType[] }) => {
     const [loading, setLoading] = useState(false);
 
+    const router = useRouter();
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -49,7 +55,7 @@ const ProductForm = ({ categories }: { categories: CategoryType[] }) => {
             price: '',
             description: '',
             categoryId: '',
-            imgUrl: '',
+            imgUrls: [],
             width: '',
             height: '',
             length: '',
@@ -58,11 +64,19 @@ const ProductForm = ({ categories }: { categories: CategoryType[] }) => {
         },
     });
 
-    // 2. Define a submit handler.
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        // Do something with the form values.
-        // ✅ This will be type-safe and validated.
-        console.log(values);
+    console.log(form.getValues('imgUrls'));
+
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+        try {
+            setLoading(true);
+            const res = await axios.post('/api/products', { ...values });
+            setLoading(false);
+
+            router.push('/inventory/categories');
+            router.refresh();
+        } catch (error) {
+            console.log(error);
+        }
     }
     return (
         <Form {...form}>
@@ -127,7 +141,7 @@ const ProductForm = ({ categories }: { categories: CategoryType[] }) => {
                                     {categories?.map(category => (
                                         <SelectItem
                                             key={category.id}
-                                            value={category.name}
+                                            value={category.id.toString()}
                                             className='capitalize'>
                                             {category.name}
                                         </SelectItem>
@@ -196,19 +210,49 @@ const ProductForm = ({ categories }: { categories: CategoryType[] }) => {
                         </FormItem>
                     )}
                 />
+                <FormField
+                    control={form.control}
+                    name='colors'
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Colors</FormLabel>
+                            <FormDescription>
+                                Please separate each color with a comma {'","'}.
+                            </FormDescription>
+                            <FormControl>
+                                <ColorPicker onChange={field.onChange} value={field.value} />
+                            </FormControl>
+
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
 
                 <FormField
                     control={form.control}
-                    name='imgUrl'
+                    name='imgUrls'
                     render={({ field }) => (
                         <FormItem className='col-span-2'>
                             <FormLabel>Image</FormLabel>
                             <FormControl>
                                 <ImageInput
-                                    value={field.value ? [field.value] : []}
+                                    value={field.value.map(url => url)}
                                     disabled={loading}
-                                    onChange={url => field.onChange(url)}
-                                    onRemove={() => field.onChange('')}
+                                    onChange={
+                                        url => field.onChange([...field.value, url])
+                                        // form.setValue('imgUrls', [...field.value, url])
+                                    }
+                                    onRemove={
+                                        url =>
+                                            field.onChange([
+                                                ...field.value.filter(current => current !== url),
+                                            ])
+                                        // form.setValue(
+                                        //     'imgUrls',
+                                        //     field.value.filter(current => current !== url)
+
+                                        // )
+                                    }
                                 />
                             </FormControl>
 
@@ -216,7 +260,9 @@ const ProductForm = ({ categories }: { categories: CategoryType[] }) => {
                         </FormItem>
                     )}
                 />
-                <Button type='submit'>Submit</Button>
+                <Button type='submit' disabled={loading}>
+                    Submit
+                </Button>
             </form>
         </Form>
     );

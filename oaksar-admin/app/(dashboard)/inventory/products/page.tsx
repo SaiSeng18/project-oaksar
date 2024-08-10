@@ -6,6 +6,8 @@ import { ProductColumns, ProductTableProps } from '@/components/products-page/da
 import { Button } from '@/components/ui/button';
 import { db } from '@/db';
 
+export const dynamic = 'force-dynamic';
+
 async function getData(): Promise<Partial<ProductTableProps>[]> {
     const data = (await db.query.product.findMany({
         with: { category: true },

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { eq } from 'drizzle-orm';
+import { eq, inArray } from 'drizzle-orm';
 
 import { db } from '@/db';
 import { category } from '@/db/schema';
@@ -39,15 +39,10 @@ export async function PATCH(
     }
 }
 
-export async function DELETE(
-    req: Request,
-    { params }: { params: { storeId: string; categoryId: string } }
-) {
+export async function DELETE(req: Request, { params }: { params: { categoryId: string } }) {
     try {
-        const data = await db
-            .delete(category)
-            .where(eq(category.id, parseInt(params.categoryId)))
-            .returning();
+        const ids = params.categoryId.split(',').map(Number);
+        const data = await db.delete(category).where(inArray(category.id, ids)).returning();
 
         return NextResponse.json(data);
     } catch (error) {

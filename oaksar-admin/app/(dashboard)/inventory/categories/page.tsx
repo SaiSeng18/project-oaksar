@@ -1,30 +1,20 @@
 import Link from 'next/link';
 import { Plus } from 'lucide-react';
 
+import { DataTable } from '@/components/categories-page/data-table';
 import {
     CategoryColumns,
     CategoryTableProps,
 } from '@/components/categories-page/data-table/column';
-import { DataTable } from '@/components/products-page/data-table';
 import { Button } from '@/components/ui/button';
+import { db } from '@/db';
+
+export const dynamic = 'force-dynamic';
 
 async function getData(): Promise<Partial<CategoryTableProps>[]> {
+    const data = await db.query.category.findMany();
     // Fetch data from your API here.
-    return [
-        {
-            id: 1,
-            name: 'Product 1',
-
-            description: 'Product 1 description',
-        },
-        {
-            id: 2,
-            name: 'Product 2',
-
-            description: 'Product 2 description',
-        },
-        // ...
-    ];
+    return data;
 }
 const CategoriesPage = async () => {
     const data = await getData();

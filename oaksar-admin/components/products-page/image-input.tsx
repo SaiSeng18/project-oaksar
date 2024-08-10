@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { ImagePlus, Trash } from 'lucide-react';
-import { CldUploadWidget } from 'next-cloudinary';
+import { CldUploadWidget, CloudinaryUploadWidgetResults } from 'next-cloudinary';
 
 import { Button } from '@/components/ui/button';
 
@@ -14,7 +14,7 @@ interface ImageUploadProps {
     value: string[];
 }
 
-export default function ImageInput({ disabled, onChange, onRemove, value }: ImageUploadProps) {
+const ImageUpload: React.FC<ImageUploadProps> = ({ disabled, onChange, onRemove, value }) => {
     const [isMounted, setIsMounted] = useState(false);
 
     useEffect(() => {
@@ -22,9 +22,9 @@ export default function ImageInput({ disabled, onChange, onRemove, value }: Imag
     }, []);
 
     const onUpload = (result: any) => {
-        console.log(result);
-
-        onChange(result.info.secure_url);
+        if (result.event === 'success') {
+            onChange(result.info.secure_url);
+        }
     };
 
     if (!isMounted) {
@@ -42,16 +42,19 @@ export default function ImageInput({ disabled, onChange, onRemove, value }: Imag
                             <Button
                                 type='button'
                                 onClick={() => onRemove(url)}
-                                variant='default'
+                                variant='destructive'
                                 size='icon'>
                                 <Trash className='h-4 w-4' />
                             </Button>
                         </div>
-                        <Image fill className='object-cover' alt='Image' src={url} />
+                        <Image fill className='object-cover' alt='image' src={url} />
                     </div>
                 ))}
             </div>
-            <CldUploadWidget onUpload={onUpload} uploadPreset='ouqiebou'>
+            <CldUploadWidget
+                onUpload={onUpload}
+                uploadPreset='ouqiebou'
+                options={{ multiple: true, maxFiles: 5 }}>
                 {({ open }) => {
                     return (
                         <Button
@@ -67,4 +70,6 @@ export default function ImageInput({ disabled, onChange, onRemove, value }: Imag
             </CldUploadWidget>
         </div>
     );
-}
+};
+
+export default ImageUpload;

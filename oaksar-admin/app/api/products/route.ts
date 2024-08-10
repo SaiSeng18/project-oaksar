@@ -16,8 +16,31 @@ export async function GET(req: Request, { params }: { params: { billboardId: str
 
 export async function POST(req: Request, { params }: { params: { storeId: string } }) {
     try {
-        const { name, price, description, categoryId }: ProductInsert = await req.json();
-        const data = await db.insert(product).values({ name, price, description, categoryId });
+        const {
+            name,
+            price,
+            description,
+            categoryId,
+            width,
+            height,
+            length,
+            weight,
+            colors,
+            imgUrl,
+        } = await req.json();
+
+        const data = await db.insert(product).values({
+            name,
+            price,
+            description,
+            categoryId: parseInt(categoryId as string),
+            width,
+            height,
+            length,
+            weight,
+            colors,
+            imgUrl,
+        });
 
         return NextResponse.json(data);
     } catch (error) {

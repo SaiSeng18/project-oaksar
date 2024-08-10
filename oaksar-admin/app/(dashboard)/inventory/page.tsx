@@ -5,6 +5,8 @@ import { columns } from '@/components/inventory/data-table/column';
 import { Button } from '@/components/ui/button';
 import { InventoryType, ProductType } from '@/db/schema';
 
+export const dynamic = 'force-dynamic';
+
 async function getData(): Promise<Partial<InventoryType & ProductType>[]> {
     // Fetch data from your API here.
     return [

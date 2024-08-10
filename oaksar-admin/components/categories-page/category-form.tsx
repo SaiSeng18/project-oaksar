@@ -1,9 +1,13 @@
 'use client';
 
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
+import axios from 'axios';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
+import { set, z } from 'zod';
 
+import { createCategory } from '@/actions/category';
 import { Button } from '@/components/ui/button';
 import {
     Form,
@@ -18,10 +22,14 @@ import { Textarea } from '@/components/ui/textarea';
 
 const formSchema = z.object({
     name: z.string().min(2).max(50),
-    description: z.string().min(2).max(50),
+    description: z.string(),
 });
 
 const CategoryForm = () => {
+    const [loading, setLoading] = useState(false);
+
+    const router = useRouter();
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -30,8 +38,21 @@ const CategoryForm = () => {
         },
     });
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values);
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+        try {
+            setLoading(true);
+            const res = await axios.post('/api/category', {
+                name: values.name,
+                description: values.description,
+            });
+            console.log(res);
+            setLoading(false);
+
+            router.push('/inventory/categories');
+            router.refresh();
+        } catch (error) {
+            console.log(error);
+        }
     }
     return (
         <Form {...form}>
@@ -67,7 +88,9 @@ const CategoryForm = () => {
                     )}
                 />
 
-                <Button type='submit'>Submit</Button>
+                <Button type='submit' disabled={loading}>
+                    Submit
+                </Button>
             </form>
         </Form>
     );
