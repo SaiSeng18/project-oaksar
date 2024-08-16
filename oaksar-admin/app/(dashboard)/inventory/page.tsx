@@ -32,8 +32,8 @@ const InventoryPage = async () => {
             </div>
 
             <div className='w-full'>
-                {data.length === 0 ? (
-                    <div className='flex h-screen flex-1 items-center justify-center'>
+                {data.length < 1 ? (
+                    <div className='flex h-40 flex-1 items-center justify-center'>
                         Start By Adding New Data
                     </div>
                 ) : (

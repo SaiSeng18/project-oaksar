@@ -1,9 +1,8 @@
-import Link from 'next/link';
 import { Plus } from 'lucide-react';
+import Link from 'next/link';
 
 import { DataTable } from '@/components/products-page/data-table';
 import { ProductColumns, ProductTableProps } from '@/components/products-page/data-table/column';
-import { Button } from '@/components/ui/button';
 import { db } from '@/db';
 
 export const dynamic = 'force-dynamic';
@@ -33,7 +32,13 @@ const ProductsPage = async () => {
             </div>
 
             <div className='w-full'>
-                <DataTable columns={ProductColumns} data={data} />
+                {data.length < 1 ? (
+                    <div className='flex h-40 flex-1 items-center justify-center'>
+                        Start By Adding New Data
+                    </div>
+                ) : (
+                    <DataTable columns={ProductColumns} data={data} />
+                )}
             </div>
         </section>
     );

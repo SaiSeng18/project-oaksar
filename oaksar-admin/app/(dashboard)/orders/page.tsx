@@ -1,5 +1,5 @@
-import Link from 'next/link';
 import { Plus } from 'lucide-react';
+import Link from 'next/link';
 
 import { OrdersTable } from '@/components/orders-page/data-table';
 import { columns } from '@/components/orders-page/data-table/column';
@@ -160,7 +160,13 @@ const OrdersPage = async () => {
             </div>
 
             <div className='w-full'>
-                <OrdersTable columns={columns} data={data} />
+                {data.length < 1 ? (
+                    <div className='flex h-40 flex-1 items-center justify-center'>
+                        Start By Adding New Data
+                    </div>
+                ) : (
+                    <OrdersTable columns={columns} data={data} />
+                )}
             </div>
         </section>
     );
