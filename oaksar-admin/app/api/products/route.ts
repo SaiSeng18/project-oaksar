@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 
 import { db } from '@/db';
-import { product, ProductInsert } from '@/db/schema';
+import { product } from '@/db/schema';
 
 export async function GET(req: Request, { params }: { params: { billboardId: string } }) {
     try {
@@ -21,7 +21,6 @@ export async function POST(req: Request, { params }: { params: { storeId: string
             price,
             description,
             categoryId,
-            supplierId,
             width,
             height,
             length,
@@ -41,7 +40,6 @@ export async function POST(req: Request, { params }: { params: { storeId: string
             weight,
             colors,
             imgUrls,
-            supplierId,
         });
 
         return NextResponse.json(data);
