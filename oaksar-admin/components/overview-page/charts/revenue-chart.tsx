@@ -1,9 +1,14 @@
 'use client';
 
 import { Banknote } from 'lucide-react';
-import { Line, LineChart } from 'recharts';
+import { CartesianGrid, Line, LineChart, XAxis } from 'recharts';
 
-import { ChartConfig, ChartContainer } from '@/components/ui/chart';
+import {
+    ChartConfig,
+    ChartContainer,
+    ChartTooltip,
+    ChartTooltipContent,
+} from '@/components/ui/chart';
 
 import ChartCard from './chart-card';
 
@@ -32,11 +37,11 @@ const chartConfig = {
 
 const RevenueChart = () => {
     return (
-        <ChartCard title='Revenue' icon={Banknote}>
-            <div className='flex justify-between gap-2'>
-                <div className='flex h-full items-center text-5xl text-dark'>$1000</div>
-                <div className='h-20 w-1/2'>
-                    <ChartContainer config={chartConfig} className='h-full w-full'>
+        <ChartCard title='Revenue' icon={Banknote} description='Your current balance is 2000%'>
+            <div className='flex justify-between gap-2 flex-col'>
+                <div className='text-2xl font-medium'>2000$</div>
+                <div className='w-full'>
+                    <ChartContainer config={chartConfig}>
                         <LineChart
                             accessibilityLayer
                             data={chartData}
@@ -44,18 +49,18 @@ const RevenueChart = () => {
                                 left: 12,
                                 right: 12,
                             }}>
-                            {/* <XAxis
+                            <CartesianGrid vertical={false} />
+                            <XAxis
                                 dataKey='day'
                                 tickLine={false}
                                 axisLine={false}
                                 tickMargin={8}
-                                tickFormatter={value => value.slice(0, 3)}
+                                // tickFormatter={value => value.slice(0, 3)}
                             />
                             <ChartTooltip
-                                
                                 cursor={false}
-                                content={<ChartTooltipContent />}
-                            /> */}
+                                content={<ChartTooltipContent hideLabel />}
+                            />
                             <Line
                                 dataKey='revenue'
                                 type='linear'

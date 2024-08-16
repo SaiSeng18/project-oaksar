@@ -21,12 +21,13 @@ export async function POST(req: Request, { params }: { params: { storeId: string
             price,
             description,
             categoryId,
+            supplierId,
             width,
             height,
             length,
             weight,
             colors,
-            imgUrl,
+            imgUrls,
         } = await req.json();
 
         const data = await db.insert(product).values({
@@ -39,7 +40,8 @@ export async function POST(req: Request, { params }: { params: { storeId: string
             length,
             weight,
             colors,
-            imgUrl,
+            imgUrls,
+            supplierId,
         });
 
         return NextResponse.json(data);

@@ -1,23 +1,11 @@
 'use client';
 
-import { Banknote, Package } from 'lucide-react';
-import {
-    Bar,
-    BarChart,
-    CartesianGrid,
-    LabelList,
-    Line,
-    LineChart,
-    Rectangle,
-    XAxis,
-    YAxis,
-} from 'recharts';
+import { Package } from 'lucide-react';
+import { Bar, BarChart, CartesianGrid, LabelList, XAxis, YAxis } from 'recharts';
 
 import {
     ChartConfig,
     ChartContainer,
-    ChartLegend,
-    ChartLegendContent,
     ChartTooltip,
     ChartTooltipContent,
 } from '@/components/ui/chart';
@@ -25,42 +13,79 @@ import {
 import ChartCard from './chart-card';
 
 const chartData = [
-    { browser: 'chrome', visitors: 187, fill: 'var(--color-chrome)' },
-    { browser: 'safari', visitors: 200, fill: 'var(--color-safari)' },
-    { browser: 'firefox', visitors: 275, fill: 'var(--color-firefox)' },
-    { browser: 'edge', visitors: 173, fill: 'var(--color-edge)' },
-    { browser: 'other', visitors: 90, fill: 'var(--color-other)' },
+    { status: 'pending', value: 3, fill: 'var(--color-pending)' },
+    { status: 'shipped', value: 5, fill: 'var(--color-shipped)' },
+    { status: 'received', value: 3, fill: 'var(--color-received)' },
 ];
+
 const chartConfig = {
-    visitors: {
-        label: 'Visitors',
+    status: {
+        label: 'Status',
     },
-    chrome: {
-        label: 'Chrome',
+    value: {
+        label: 'Value',
+    },
+    pending: {
+        label: 'Pending',
         color: 'hsl(var(--chart-1))',
     },
-    safari: {
-        label: 'Safari',
+    shipped: {
+        label: 'Shipped',
         color: 'hsl(var(--chart-2))',
     },
-    firefox: {
-        label: 'Firefox',
+    received: {
+        label: 'Received',
         color: 'hsl(var(--chart-3))',
-    },
-    edge: {
-        label: 'Edge',
-        color: 'hsl(var(--chart-4))',
-    },
-    other: {
-        label: 'Other',
-        color: 'hsl(var(--chart-5))',
     },
 } satisfies ChartConfig;
 
 const OrderChart = () => {
     return (
         <ChartCard title='Orders' icon={Package}>
-            <div className='flex h-20 justify-between gap-2'></div>
+            <div className='flex justify-between gap-2 w-full'>
+                <ChartContainer config={chartConfig} className='w-full h-full'>
+                    <BarChart
+                        className='w-full'
+                        accessibilityLayer
+                        data={chartData}
+                        layout='vertical'
+                        margin={{
+                            right: 20,
+                        }}>
+                        <CartesianGrid horizontal={false} />
+                        <YAxis
+                            dataKey='status'
+                            type='category'
+                            tickLine={false}
+                            tickMargin={10}
+                            axisLine={false}
+                            tickFormatter={value => value.slice(0, 3)}
+                            hide
+                        />
+                        <XAxis dataKey='value' type='number' hide />
+                        <ChartTooltip
+                            cursor={false}
+                            content={<ChartTooltipContent indicator='line' />}
+                        />
+                        <Bar dataKey='value' layout='vertical' radius={4}>
+                            <LabelList
+                                dataKey='value'
+                                position='insideLeft'
+                                offset={8}
+                                className='fill-[--color-label]'
+                                fontSize={12}
+                            />
+                            <LabelList
+                                dataKey='status'
+                                position='right'
+                                offset={8}
+                                className='fill-foreground capitalize'
+                                fontSize={12}
+                            />
+                        </Bar>
+                    </BarChart>
+                </ChartContainer>
+            </div>
         </ChartCard>
     );
 };

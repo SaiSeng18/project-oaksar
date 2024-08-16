@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { ColumnDef } from '@tanstack/react-table';
 
 import { Checkbox } from '@/components/ui/checkbox';
@@ -7,7 +8,7 @@ import { InventoryType, ProductType } from '@/db/schema';
 
 import CellAction from './cell-action';
 
-export const columns: ColumnDef<Partial<InventoryType & ProductType>>[] = [
+export const columns: ColumnDef<Partial<InventoryType & { product: ProductType }>>[] = [
     {
         id: 'select',
         header: ({ table }) => (
@@ -31,20 +32,24 @@ export const columns: ColumnDef<Partial<InventoryType & ProductType>>[] = [
         enableHiding: false,
     },
     {
-        accessorKey: 'inventoryId',
-        header: 'Id',
+        accessorKey: 'product.name',
+        header: 'Product',
+
+        cell: ({ row }) => (
+            <Link href={`/inventory/${row.original.id}`}>{row.original.product?.name}</Link>
+        ),
     },
     {
-        accessorKey: 'name',
+        accessorKey: 'quantity',
         header: 'Quantity',
     },
     {
-        accessorKey: 'reorderPoint',
-        header: 'Reorder Point',
+        accessorKey: 'reorderLevel',
+        header: 'Reorder Level',
     },
     {
-        accessorKey: 'safetyStock',
-        header: 'Safety Stock',
+        accessorKey: 'leadTime',
+        header: 'Lead Time',
     },
     {
         id: 'actions',

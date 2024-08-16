@@ -1,19 +1,45 @@
 import { NextResponse } from 'next/server';
+import { inArray } from 'drizzle-orm';
 
-export async function GET(req: Request, { params }: { params: { billboardId: string } }) {
+import { db } from '@/db';
+import { category, CategoryInsert, CategoryType, inventory, InventoryType } from '@/db/schema';
+
+export async function GET() {
     try {
-        return NextResponse.json({ message: 'Products' });
+        const data = await db.query.inventory.findMany();
+
+        return NextResponse.json(data);
     } catch (error) {
-        console.log('[BILLBOARD_GET]', error);
+        console.log('[product_GET]', error);
         return new NextResponse('Internal Error', { status: 500 });
     }
 }
 
-export async function POST(req: Request, { params }: { params: { storeId: string } }) {
+export async function POST(req: Request) {
     try {
-        return NextResponse.json({ message: 'Products' });
+        const { productId, quantity, reorderLevel, leadTime } = await req.json();
+
+        const data = await db
+            .insert(inventory)
+            .values({ productId, quantity, reorderLevel, leadTime })
+            .returning();
+
+        return NextResponse.json(data);
     } catch (error) {
-        console.log('[BILLBOARD_POST]', error);
+        console.log('[product_POST]', error);
         return new NextResponse('Internal error', { status: 500 });
+    }
+}
+
+export async function DELETE(req: Request, { params }: { params: { categoryId: string } }) {
+    try {
+        const body: InventoryType[] = await req.json();
+        const ids = body.map(item => item.id);
+        const data = await db.delete(inventory).where(inArray(inventory.id, ids)).returning();
+
+        return NextResponse.json(data);
+    } catch (error) {
+        console.log('[category_DELETE]', error);
+        return new NextResponse('Internal Error', { status: 500 });
     }
 }

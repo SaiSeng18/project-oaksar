@@ -40,7 +40,14 @@ const SideNav = () => {
                         />
                     </li>
                     <li className='w-full'>
-                        <Nav title='Orders' href='/overview' type='multiple' />
+                        <Nav
+                            title='Orders'
+                            links={[
+                                { title: 'Order List', href: '/orders' },
+                                { title: 'Suppliers', href: '/orders/suppliers' },
+                            ]}
+                            type='multiple'
+                        />
                     </li>
                     <li className='w-full'>
                         <Nav title='Sales' href='/overview' type='multiple' />

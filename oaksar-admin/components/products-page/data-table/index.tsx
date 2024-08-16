@@ -51,6 +51,11 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
         state: {
             columnFilters,
         },
+        initialState: {
+            pagination: {
+                pageSize: 5,
+            },
+        },
     });
 
     const handleDelete = () => {

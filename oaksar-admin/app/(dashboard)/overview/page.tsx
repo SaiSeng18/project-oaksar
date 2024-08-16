@@ -1,8 +1,3 @@
-import { openai } from '@ai-sdk/openai';
-import { generateObject, generateText, streamText } from 'ai';
-import { z } from 'zod';
-
-import { getWeatherData } from '@/actions/ai';
 import Analytics from '@/components/overview-page/analytics';
 import { db } from '@/db';
 
@@ -24,6 +19,10 @@ const DashboardPage = async () => {
 
     return (
         <section className='px-10 py-5 2xl:px-5'>
+            <div className='mb-20 flex w-full items-center justify-between'>
+                <div className='text-5xl'>Overview</div>
+            </div>
+
             <Analytics />
         </section>
     );

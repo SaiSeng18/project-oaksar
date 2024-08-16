@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { ColumnDef } from '@tanstack/react-table';
 
 import { Checkbox } from '@/components/ui/checkbox';
@@ -39,11 +40,18 @@ export const ProductColumns: ColumnDef<Partial<ProductTableProps>>[] = [
     {
         accessorKey: 'name',
         header: 'Name',
+        cell: ({ row }) => (
+            <Link href={`/inventory/products/${row.original.id}`}>{row.original.name}</Link>
+        ),
     },
     {
         accessorKey: 'category.name',
         header: 'Category',
-        cell: ({ row }) => <div className='capitalize'>{row.original.category?.name}</div>,
+        cell: ({ row }) => (
+            <div className='capitalize'>
+                {row.original.category?.name ? row.original.category?.name : 'N/A'}
+            </div>
+        ),
     },
     {
         accessorKey: 'price',

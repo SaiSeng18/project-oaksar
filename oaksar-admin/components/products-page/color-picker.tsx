@@ -41,7 +41,9 @@ const ColorPicker = ({
             </div>
             <div className='flex items-center gap-2'>
                 <Input value={input} onChange={e => setInput(e.target.value)} />
-                <Button onClick={handleInput}>Add</Button>
+                <Button onClick={handleInput} type='button'>
+                    Add
+                </Button>
             </div>
         </div>
     );

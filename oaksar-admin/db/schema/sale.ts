@@ -1,11 +1,10 @@
-import { relations } from 'drizzle-orm';
 import { integer, pgEnum, pgTable, serial, text, timestamp, varchar } from 'drizzle-orm/pg-core';
 
 import { product, supplier } from './inventory';
 
 export const status = pgEnum('status', ['pending', 'shipped', 'received']);
 
-export const order = pgTable('product', {
+export const sale = pgTable('product', {
     id: serial('id').primaryKey(),
     productId: integer('product_id').references(() => product.id, { onDelete: 'set null' }),
     supplierId: integer('supplier_id').references(() => supplier.id, { onDelete: 'set null' }),
@@ -20,10 +19,3 @@ export const order = pgTable('product', {
         .$onUpdate(() => new Date())
         .defaultNow(),
 });
-
-export const orderRelation = relations(order, ({ many }) => ({
-    products: many(product),
-}));
-
-export type OrderType = typeof order.$inferSelect;
-export type OrderInsert = typeof order.$inferInsert;

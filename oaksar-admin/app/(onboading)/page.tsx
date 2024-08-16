@@ -47,7 +47,7 @@ export default function Home() {
 
             <div className='flex w-full max-w-[1440px] flex-wrap items-center justify-between pb-5 pt-20 text-sm md:justify-center md:text-center'>
                 <div>
-                    Build by the <span className='font-bold'>S.Y.M.K Team</span> with passion. All
+                    Build by the <span className='font-bold'>Duo Core</span> with passion. All
                     rights reserved.
                 </div>
 

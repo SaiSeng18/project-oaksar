@@ -50,6 +50,11 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
         state: {
             columnFilters,
         },
+        initialState: {
+            pagination: {
+                pageSize: 5,
+            },
+        },
     });
 
     const handleDelete = () => {
@@ -67,8 +72,10 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
             <div className='flex items-center py-4'>
                 <Input
                     placeholder='Filter products...'
-                    value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
-                    onChange={event => table.getColumn('name')?.setFilterValue(event.target.value)}
+                    value={(table.getColumn('product_name')?.getFilterValue() as string) ?? ''}
+                    onChange={event =>
+                        table.getColumn('product_name')?.setFilterValue(event.target.value)
+                    }
                     className='max-w-sm'
                 />
                 <div className='ml-auto flex gap-2'>

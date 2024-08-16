@@ -41,15 +41,8 @@ export default function CellAction({ data }: CellActionProps) {
     const onDelete = async () => {
         try {
             setLoading(true);
-            // await axios.delete(`/api/${params.storeId}/billboards/${data.id}`);
+            await axios.delete(`/api/inventory/${data.id}`);
             router.refresh();
-            toast({
-                description: 'Billboard deleted',
-                duration: 3000,
-                className: cn(
-                    'top-5 right-5 flex fixed max-w-[420px] md:top-4 md:right-4 bg-red-400 text-white'
-                ),
-            });
         } catch (error) {
             toast({
                 description: 'Fail to delete billboard',
@@ -79,15 +72,13 @@ export default function CellAction({ data }: CellActionProps) {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align='end'>
                     <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                    <DropdownMenuItem onClick={() => onCopy(data.inventoryId!.toString())}>
+                    <DropdownMenuItem onClick={() => onCopy(data.id!.toString())}>
                         <Copy className='mr-2 h-4 w-4' />
                         Copy ID
                     </DropdownMenuItem>
                     <DropdownMenuItem
                         onClick={() => {
-                            router.push(
-                                `/${params.storeId}/billboards/${data.inventoryId!.toString()}`
-                            );
+                            router.push(`/inventory/${data.id!.toString()}/edit`);
                         }}>
                         <Edit className='mr-2 h-4 w-4' />
                         Update

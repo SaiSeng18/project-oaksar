@@ -1,9 +1,9 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -11,7 +11,6 @@ import { Button } from '@/components/ui/button';
 import {
     Form,
     FormControl,
-    FormDescription,
     FormField,
     FormItem,
     FormLabel,
@@ -34,7 +33,8 @@ const formSchema = z.object({
     name: z.string().min(2).max(50),
     price: z.string().min(1),
     description: z.string().min(2).max(50),
-    categoryId: z.string().min(1),
+    categoryId: z.string(),
+    supplierId: z.string(),
     imgUrls: z.string().array(),
     width: z.string(),
     height: z.string(),
@@ -55,6 +55,7 @@ const ProductForm = ({ categories }: { categories: CategoryType[] }) => {
             price: '',
             description: '',
             categoryId: '',
+            supplierId: '',
             imgUrls: [],
             width: '',
             height: '',
@@ -63,8 +64,6 @@ const ProductForm = ({ categories }: { categories: CategoryType[] }) => {
             colors: [],
         },
     });
-
-    console.log(form.getValues('imgUrls'));
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         try {
@@ -125,6 +124,7 @@ const ProductForm = ({ categories }: { categories: CategoryType[] }) => {
                         </FormItem>
                     )}
                 />
+
                 <FormField
                     control={form.control}
                     name='categoryId'
@@ -216,9 +216,7 @@ const ProductForm = ({ categories }: { categories: CategoryType[] }) => {
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel>Colors</FormLabel>
-                            <FormDescription>
-                                Please separate each color with a comma {'","'}.
-                            </FormDescription>
+
                             <FormControl>
                                 <ColorPicker onChange={field.onChange} value={field.value} />
                             </FormControl>

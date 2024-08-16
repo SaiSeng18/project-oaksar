@@ -15,11 +15,11 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useToast } from '@/components/ui/use-toast';
-import { InventoryType, ProductType } from '@/db/schema';
+import { InventoryType } from '@/db/schema';
 import { cn } from '@/lib/utils';
 
 interface CellActionProps {
-    data: Partial<ProductType>;
+    data: Partial<InventoryType>;
 }
 
 export default function CellAction({ data }: CellActionProps) {
@@ -41,7 +41,7 @@ export default function CellAction({ data }: CellActionProps) {
     const onDelete = async () => {
         try {
             setLoading(true);
-            await axios.delete(`/api/products/${data.id}`);
+            await axios.delete(`/api/inventory/${data.id}`);
             router.refresh();
         } catch (error) {
             toast({
@@ -72,9 +72,13 @@ export default function CellAction({ data }: CellActionProps) {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align='end'>
                     <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                    <DropdownMenuItem onClick={() => onCopy(data.id!.toString())}>
+                        <Copy className='mr-2 h-4 w-4' />
+                        Copy ID
+                    </DropdownMenuItem>
                     <DropdownMenuItem
                         onClick={() => {
-                            router.push(`/inventory/product/${data.id!.toString()}/edit`);
+                            router.push(`/inventory/${data.id!.toString()}/edit`);
                         }}>
                         <Edit className='mr-2 h-4 w-4' />
                         Update
