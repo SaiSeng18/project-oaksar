@@ -71,7 +71,7 @@ const ProductForm = ({ categories }: { categories: CategoryType[] }) => {
             const res = await axios.post('/api/products', { ...values });
             setLoading(false);
 
-            router.push('/inventory/categories');
+            router.push('/inventory/products');
             router.refresh();
         } catch (error) {
             console.log(error);
