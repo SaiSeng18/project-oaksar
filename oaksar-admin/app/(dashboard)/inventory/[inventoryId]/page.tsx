@@ -2,7 +2,7 @@ import InventoryInfo from '@/components/inventory-page/inventory-info';
 import { db } from '@/db';
 import { InventoryType, ProductType } from '@/db/schema';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 const getData = async (id: string): Promise<Partial<InventoryType & { product: ProductType }>> => {
     const data = (await db.query.inventory.findFirst({

@@ -1,12 +1,12 @@
-import { Plus } from 'lucide-react';
 import Link from 'next/link';
+import { Plus } from 'lucide-react';
 
 import { DataTable } from '@/components/inventory-page/data-table';
 import { columns } from '@/components/inventory-page/data-table/column';
 import { db } from '@/db';
 import { InventoryType, ProductType } from '@/db/schema';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 async function getData(): Promise<Partial<InventoryType & ProductType>[]> {
     const data = (await db.query.inventory.findMany({ with: { product: true } })) as Partial<

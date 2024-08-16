@@ -1,6 +1,6 @@
 import CategoryForm from '@/components/categories-page/category-form';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 const AddProductPage = async () => {
     return (

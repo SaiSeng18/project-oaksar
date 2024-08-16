@@ -7,8 +7,8 @@ import * as schema from '@/db/schema';
 
 const sql = neon(process.env.DATABASE_URL!);
 
-// export const db = drizzleNeon(sql, { schema });
-export const db =
-    process.env.NODE_ENV === 'production'
-        ? drizzleNeon(sql, { schema })
-        : drizzleNode(new Pool({ connectionString: process.env.DATABASE_URL_LOCAL! }), { schema });
+export const db = drizzleNeon(sql, { schema });
+// export const db =
+//     process.env.NODE_ENV === 'production'
+//         ? drizzleNeon(sql, { schema })
+//         : drizzleNode(new Pool({ connectionString: process.env.DATABASE_URL_LOCAL! }), { schema });

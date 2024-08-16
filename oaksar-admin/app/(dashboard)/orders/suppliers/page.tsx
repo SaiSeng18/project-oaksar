@@ -1,5 +1,5 @@
-import { Plus } from 'lucide-react';
 import Link from 'next/link';
+import { Plus } from 'lucide-react';
 
 import { DataTable } from '@/components/categories-page/data-table';
 import {
@@ -8,7 +8,7 @@ import {
 } from '@/components/categories-page/data-table/column';
 import { db } from '@/db';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 async function getData(): Promise<Partial<CategoryTableProps>[]> {
     const data = await db.query.category.findMany();

@@ -1,12 +1,12 @@
-import { Plus } from 'lucide-react';
 import Link from 'next/link';
+import { Plus } from 'lucide-react';
 
 import { OrdersTable } from '@/components/orders-page/data-table';
 import { columns } from '@/components/orders-page/data-table/column';
 import { ProductType } from '@/db/schema';
 import { OrderType } from '@/db/schema/order';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 async function getData(): Promise<Partial<OrderType & { product: Partial<ProductType> }>[]> {
     return [
