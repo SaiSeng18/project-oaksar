@@ -1,9 +1,8 @@
-import Link from 'next/link';
 import { Plus } from 'lucide-react';
+import Link from 'next/link';
 
 import { DataTable } from '@/components/inventory-page/data-table';
 import { columns } from '@/components/inventory-page/data-table/column';
-import { Button } from '@/components/ui/button';
 import { db } from '@/db';
 import { InventoryType, ProductType } from '@/db/schema';
 
@@ -33,7 +32,13 @@ const InventoryPage = async () => {
             </div>
 
             <div className='w-full'>
-                <DataTable columns={columns} data={data} />
+                {data.length === 0 ? (
+                    <div className='flex h-screen flex-1 items-center justify-center'>
+                        Start By Adding New Data
+                    </div>
+                ) : (
+                    <DataTable columns={columns} data={data} />
+                )}
             </div>
         </section>
     );

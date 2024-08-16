@@ -1,8 +1,8 @@
-import { NextResponse } from 'next/server';
 import { inArray } from 'drizzle-orm';
+import { NextResponse } from 'next/server';
 
 import { db } from '@/db';
-import { category, CategoryInsert, CategoryType, inventory, InventoryType } from '@/db/schema';
+import { inventory, InventoryType } from '@/db/schema';
 
 export async function GET() {
     try {
