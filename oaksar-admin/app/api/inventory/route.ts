@@ -4,6 +4,8 @@ import { NextResponse } from 'next/server';
 import { db } from '@/db';
 import { inventory, InventoryType } from '@/db/schema';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
     try {
         const data = await db.query.inventory.findMany();

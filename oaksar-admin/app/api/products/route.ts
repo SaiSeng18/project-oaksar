@@ -3,6 +3,8 @@ import { NextResponse } from 'next/server';
 import { db } from '@/db';
 import { product } from '@/db/schema';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(req: Request, { params }: { params: { billboardId: string } }) {
     try {
         const data = await db.query.product.findMany({ with: { category: true } });

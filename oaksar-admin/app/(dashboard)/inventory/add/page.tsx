@@ -1,6 +1,8 @@
 import InventoryForm from '@/components/inventory-page/inventory-form';
 import { db } from '@/db';
 
+export const dynamic = 'force-dynamic';
+
 const AddProductPage = async () => {
     const products = await db.query.product.findMany();
 

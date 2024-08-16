@@ -1,6 +1,8 @@
 import ProductForm from '@/components/products-page/product-form';
 import { db } from '@/db';
 
+export const dynamic = 'force-dynamic';
+
 const AddProductPage = async () => {
     const categories = await db.query.category.findMany();
 

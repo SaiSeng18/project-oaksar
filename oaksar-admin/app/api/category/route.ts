@@ -1,8 +1,10 @@
-import { NextResponse } from 'next/server';
 import { inArray } from 'drizzle-orm';
+import { NextResponse } from 'next/server';
 
 import { db } from '@/db';
 import { category, CategoryInsert, CategoryType } from '@/db/schema';
+
+export const dynamic = 'force-dynamic';
 
 export async function GET() {
     try {

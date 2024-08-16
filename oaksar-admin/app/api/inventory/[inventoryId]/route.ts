@@ -1,8 +1,10 @@
-import { NextResponse } from 'next/server';
 import { eq, inArray } from 'drizzle-orm';
+import { NextResponse } from 'next/server';
 
 import { db } from '@/db';
-import { category, inventory } from '@/db/schema';
+import { inventory } from '@/db/schema';
+
+export const dynamic = 'force-dynamic';
 
 export async function GET(req: Request, { params }: { params: { inventoryId: string } }) {
     try {

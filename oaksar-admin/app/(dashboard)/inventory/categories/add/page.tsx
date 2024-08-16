@@ -1,5 +1,7 @@
 import CategoryForm from '@/components/categories-page/category-form';
 
+export const dynamic = 'force-dynamic';
+
 const AddProductPage = async () => {
     return (
         <div className='w-full px-10 py-5 2xl:px-5'>
