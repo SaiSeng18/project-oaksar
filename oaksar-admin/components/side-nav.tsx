@@ -50,7 +50,7 @@ const SideNav = () => {
                         />
                     </li>
                     <li className='w-full'>
-                        <Nav title='Sales' href='/overview' type='multiple' />
+                        <Nav title='Sales' href='/sales' type='single' />
                     </li>
                 </ul>
             </nav>

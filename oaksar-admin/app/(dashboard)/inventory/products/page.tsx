@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Plus } from 'lucide-react';
 
-import { DataTable } from '@/components/products-page/data-table';
+import { DataTable } from '@/components/data-table';
 import { ProductColumns, ProductTableProps } from '@/components/products-page/data-table/column';
 import { db } from '@/db';
 
@@ -37,7 +37,7 @@ const ProductsPage = async () => {
                         Start By Adding New Data
                     </div>
                 ) : (
-                    <DataTable columns={ProductColumns} data={data} />
+                    <DataTable columns={ProductColumns} data={data} filterKey='name' />
                 )}
             </div>
         </section>

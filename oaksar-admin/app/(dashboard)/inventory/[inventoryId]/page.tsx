@@ -1,13 +1,15 @@
 import InventoryInfo from '@/components/inventory-page/inventory-info';
 import { db } from '@/db';
-import { InventoryType, ProductType } from '@/db/schema';
+import { CategoryType, InventoryType, ProductType } from '@/db/schema';
 
 export const revalidate = 0;
 
-const getData = async (id: string): Promise<Partial<InventoryType & { product: ProductType }>> => {
+const getData = async (
+    id: string
+): Promise<Partial<InventoryType & { product: ProductType & { category: CategoryType } }>> => {
     const data = (await db.query.inventory.findFirst({
         where: (inventory, { eq }) => eq(inventory.id, parseInt(id)),
-        with: { product: true },
+        with: { product: { with: { category: true } } },
     })) as Partial<InventoryType & ProductType>;
 
     return data;

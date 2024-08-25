@@ -29,6 +29,20 @@
       "when": 1723097121703,
       "tag": "0003_add-image-url-to-product",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1724519026284,
+      "tag": "0004_sales-table",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1724519107019,
+      "tag": "0005_sales-table",
+      "breakpoints": true
     }
   ]
 }

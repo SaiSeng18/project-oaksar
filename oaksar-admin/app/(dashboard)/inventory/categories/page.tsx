@@ -1,11 +1,11 @@
 import Link from 'next/link';
 import { Plus } from 'lucide-react';
 
-import { DataTable } from '@/components/categories-page/data-table';
 import {
     CategoryColumns,
     CategoryTableProps,
 } from '@/components/categories-page/data-table/column';
+import { DataTable } from '@/components/data-table';
 import { db } from '@/db';
 
 export const revalidate = 0;
@@ -37,7 +37,7 @@ const CategoriesPage = async () => {
                         Start By Adding New Data
                     </div>
                 ) : (
-                    <DataTable columns={CategoryColumns} data={data} />
+                    <DataTable columns={CategoryColumns} data={data} filterKey='name' />
                 )}
             </div>
         </section>

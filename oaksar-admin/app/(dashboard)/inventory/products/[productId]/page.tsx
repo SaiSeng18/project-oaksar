@@ -49,8 +49,13 @@ const ProductPage = async ({ params }: { params: { productId: string } }) => {
                                 product?.imgUrls?.map((url, i) => (
                                     <div
                                         key={i}
-                                        className='relative size-[150px] overflow-hidden rounded-md object-contain'>
-                                        <Image src={url} fill alt='product image' />
+                                        className='relative size-[150px] overflow-hidden rounded-md'>
+                                        <Image
+                                            src={url}
+                                            fill
+                                            alt='product image'
+                                            className='object-contain'
+                                        />
                                     </div>
                                 ))
                             )}

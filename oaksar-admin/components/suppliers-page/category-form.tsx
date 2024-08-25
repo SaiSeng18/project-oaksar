@@ -5,36 +5,29 @@ import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
+import { set, z } from 'zod';
 
+import { createCategory } from '@/actions/category';
 import { Button } from '@/components/ui/button';
 import {
     Form,
     FormControl,
-    FormDescription,
     FormField,
     FormItem,
     FormLabel,
     FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from '@/components/ui/select';
-import { product, ProductType } from '@/db/schema';
+import { Textarea } from '@/components/ui/textarea';
 
 const formSchema = z.object({
-    productId: z.string().min(1),
-    quantity: z.string(),
-    reorderLevel: z.string(),
-    leadTime: z.string(),
+    name: z.string().min(2).max(50),
+    phone: z.string().min(2),
+    email: z.string().min(2),
+    description: z.string(),
 });
 
-const InventoryForm = ({ products }: { products: ProductType[] }) => {
+const SuppliersForm = () => {
     const [loading, setLoading] = useState(false);
 
     const router = useRouter();
@@ -42,20 +35,26 @@ const InventoryForm = ({ products }: { products: ProductType[] }) => {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            productId: '',
-            quantity: '',
-            reorderLevel: '',
-            leadTime: '',
+            name: '',
+            phone: '',
+            email: '',
+            description: '',
         },
     });
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         try {
             setLoading(true);
-            const res = await axios.post('/api/inventory', { ...values });
+            const res = await axios.post('/api/supplier', {
+                name: values.name,
+                phone: values.phone,
+                email: values.email,
+                description: values.description,
+            });
+            console.log(res);
             setLoading(false);
 
-            router.push('/inventory');
+            router.push('/orders/suppliers');
             router.refresh();
         } catch (error) {
             console.log(error);
@@ -68,38 +67,40 @@ const InventoryForm = ({ products }: { products: ProductType[] }) => {
                 className='grid max-w-3xl grid-cols-2 gap-5'>
                 <FormField
                     control={form.control}
-                    name='productId'
+                    name='name'
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Product</FormLabel>
-                            <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                <FormControl>
-                                    <SelectTrigger className='capitalize'>
-                                        <SelectValue placeholder='Select a category' />
-                                    </SelectTrigger>
-                                </FormControl>
-                                <SelectContent>
-                                    {products?.map(product => (
-                                        <SelectItem
-                                            key={product.id}
-                                            value={product.id.toString()}
-                                            className='capitalize'>
-                                            {product.name}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
+                            <FormLabel>Supplier Name</FormLabel>
+                            <FormControl>
+                                <Input {...field} />
+                            </FormControl>
 
                             <FormMessage />
                         </FormItem>
                     )}
                 />
+
                 <FormField
                     control={form.control}
-                    name='quantity'
+                    name='phone'
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Quantity</FormLabel>
+                            <FormLabel>Phone</FormLabel>
+                            <FormControl>
+                                <Input {...field} />
+                            </FormControl>
+
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+
+                <FormField
+                    control={form.control}
+                    name='email'
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Email</FormLabel>
                             <FormControl>
                                 <Input {...field} />
                             </FormControl>
@@ -110,26 +111,12 @@ const InventoryForm = ({ products }: { products: ProductType[] }) => {
                 />
                 <FormField
                     control={form.control}
-                    name='reorderLevel'
+                    name='description'
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Reorder Level</FormLabel>
+                            <FormLabel>Description</FormLabel>
                             <FormControl>
-                                <Input {...field} />
-                            </FormControl>
-
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name='leadTime'
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Lead Time</FormLabel>
-                            <FormControl>
-                                <Input {...field} />
+                                <Textarea placeholder='Description' className='h-28' {...field} />
                             </FormControl>
 
                             <FormMessage />
@@ -137,11 +124,11 @@ const InventoryForm = ({ products }: { products: ProductType[] }) => {
                     )}
                 />
 
-                <Button type='submit' disabled={loading} className='col-start-1'>
+                <Button type='submit' disabled={loading}>
                     Submit
                 </Button>
             </form>
         </Form>
     );
 };
-export default InventoryForm;
+export default SuppliersForm;

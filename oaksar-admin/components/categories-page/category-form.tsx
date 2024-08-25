@@ -45,7 +45,6 @@ const CategoryForm = () => {
                 name: values.name,
                 description: values.description,
             });
-            console.log(res);
             setLoading(false);
 
             router.push('/inventory/categories');

@@ -1,5 +1,6 @@
 'use server';
 
+import { google } from '@ai-sdk/google';
 import { openai } from '@ai-sdk/openai';
 import { streamText } from 'ai';
 import { createStreamableValue } from 'ai/rsc';
@@ -15,8 +16,18 @@ export const generateInventoryInfo = async ({
 
     (async () => {
         const { textStream } = await streamText({
-            model: openai('gpt-4o'),
+            // model: openai('gpt-4o'),
+            model: google('models/gemini-1.5-pro-latest'),
             messages: [
+                {
+                    role: 'assistant',
+                    content: [
+                        {
+                            type: 'text',
+                            text: 'I want you to act as a inventory assistant. Below here you will find the message the user will provide you with. The price are in MMK currency.',
+                        },
+                    ],
+                },
                 {
                     role: 'user',
                     content: [

@@ -1,9 +1,6 @@
 import { relations } from 'drizzle-orm';
 import { integer, pgTable, serial, text, timestamp, varchar } from 'drizzle-orm/pg-core';
 
-import { order } from './order';
-import { sale } from './sale';
-
 export const product = pgTable('product', {
     id: serial('id').primaryKey(),
     name: varchar('name', { length: 255 }).notNull(),
@@ -34,6 +31,7 @@ export const supplier = pgTable('supplier', {
     name: varchar('name', { length: 255 }).notNull(),
     phone: text('phone').notNull(),
     email: text('email').notNull(),
+    description: text('description'),
     created_at: timestamp('created_at').notNull().defaultNow(),
     updated_at: timestamp('updated_at')
         .notNull()
@@ -46,8 +44,6 @@ export const productRelation = relations(product, ({ one, many }) => ({
         fields: [product.categoryId],
         references: [category.id],
     }),
-    orders: many(order),
-    sales: many(sale),
 }));
 
 export const categoryRelation = relations(category, ({ many }) => ({
