@@ -1,13 +1,35 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
+import { eq } from 'drizzle-orm';
 
 import { db } from '@/db';
-import { product } from '@/db/schema';
+import { category, product } from '@/db/schema';
 
 export const revalidate = 0;
 
-export async function GET(req: Request, { params }: { params: { billboardId: string } }) {
+export async function GET(req: NextRequest) {
+    const url = new URL(req.url);
+
+    const category = url.searchParams.get('category') as string;
+    console.log(category);
+
     try {
-        const data = await db.query.product.findMany({ with: { category: true } });
+        let data;
+        // data = [];
+        // data = await db.query.product.findMany({
+        //     with: { category: true },
+        //     where: (product, { eq }) => eq(product.categoryId, parseInt(category as string)),
+        // });
+
+        if (category && category.length < 1) {
+            data = await db.$with('category').as(
+                db
+                    .select()
+                    .from(product)
+                    .where(eq(product.categoryId, parseInt(category)))
+            );
+        } else {
+            data = await db.select().from(product);
+        }
 
         return NextResponse.json(data);
     } catch (error) {

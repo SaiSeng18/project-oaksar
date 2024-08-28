@@ -3,17 +3,17 @@ import { differenceInDays } from 'date-fns';
 import { eq, inArray } from 'drizzle-orm';
 
 import { db } from '@/db';
-import { inventory, order, OrderType } from '@/db/schema';
+import { sale, order, OrderType } from '@/db/schema';
 
 export const revalidate = 0;
 
 export async function GET() {
     try {
-        const data = await db.query.order.findMany();
+        const data = await db.query.sale.findMany();
 
         return NextResponse.json(data);
     } catch (error) {
-        console.log('[product_GET]', error);
+        console.log('[sale_GET]', error);
         return new NextResponse('Internal Error', { status: 500 });
     }
 }
@@ -21,33 +21,28 @@ export async function GET() {
 export async function POST(req: Request) {
     try {
         const {
-            productId,
-            supplierId,
-            quantity,
-            orderDate,
-            expectedDeliveryDate,
-            status,
-            reorderLevel,
+            sale,
+            saleItems
         } = await req.json();
 
-        const inventoryData = await db.query.inventory.findFirst({
-            where: (inventory, { eq }) => eq(inventory.productId, parseInt(productId)),
-            with: { product: { with: { category: true } } },
+        const saleData = await db.query.sale.findFirst({
+            where: (sale, { eq }) => eq(sale.saleId, parseInt(saleId)),
+            with: { sale: { with: { category: true } } },
         });
 
-        if (inventoryData) {
+        if (saleData) {
             await db
-                .update(inventory)
+                .update(sale)
                 .set({
-                    quantity: inventoryData.quantity + parseInt(quantity),
+                    quantity: saleData.quantity + parseInt(quantity),
                 })
-                .where(eq(inventory.productId, parseInt(productId)))
+                .where(eq(sale.saleId, parseInt(saleId)))
                 .returning();
         } else {
             await db
-                .insert(inventory)
+                .insert(sale)
                 .values({
-                    productId,
+                    saleId,
                     quantity,
                     reorderLevel: parseInt(reorderLevel),
                     leadTime: differenceInDays(new Date(expectedDeliveryDate), new Date(orderDate)),
@@ -58,7 +53,7 @@ export async function POST(req: Request) {
         const data = await db
             .insert(order)
             .values({
-                productId: parseInt(productId),
+                saleId: parseInt(saleId),
                 supplierId: parseInt(supplierId),
                 quantity: parseInt(quantity),
                 orderDate: new Date(orderDate),
@@ -70,7 +65,7 @@ export async function POST(req: Request) {
 
         return NextResponse.json(data);
     } catch (error) {
-        console.log('[product_POST]', error);
+        console.log('[sale_POST]', error);
         return new NextResponse('Internal error', { status: 500 });
     }
 }
